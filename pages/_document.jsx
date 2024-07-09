@@ -1,6 +1,48 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+/* eslint-disable react/no-danger */
+import React from 'react'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+import PropTypes from 'prop-types';
+import createCache from '@emotion/cache'
+import createEmotionServer from '@emotion/server/create-instance'
 
-export default class MyDocument extends Document {
+const propTypes = {
+  styles: PropTypes.arrayOf(
+    PropTypes.string || PropTypes.number || PropTypes.ReactElementLike || React.ReactFragment,
+  ).isRequired,
+}
+
+class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const originalRenderPage = ctx.renderPage
+
+    const cache = createCache({
+      key: 'css',
+      prepend: true,
+    })
+
+    const { extractCriticalToChunks } = createEmotionServer(cache)
+
+    ctx.renderPage = () =>
+      originalRenderPage({
+        // eslint-disable-next-line react/display-name
+        enhanceApp: (App) => (props) => <App emotionCache={cache} {...props} />,
+      })
+    const initialProps = await Document.getInitialProps(ctx)
+    const chunks = extractCriticalToChunks(initialProps.html)
+    const emotionStyleTags = chunks.styles.map((style) => (
+      <style
+        data-emotion={`${style.key} ${style.ids.join(' ')}`}
+        key={style.key}
+        dangerouslySetInnerHTML={{ __html: style.css }}
+      />
+    ))
+
+    return {
+      ...initialProps,
+      styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
+    }
+  }
+
   render() {
     return (
       <Html lang="en">
@@ -49,6 +91,7 @@ export default class MyDocument extends Document {
      }
    `}
           </style>
+          {this.props.styles}
         </Head>
         <body>
           <Main />
@@ -58,3 +101,6 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+MyDocument.propTypes = propTypes
+export default MyDocument
