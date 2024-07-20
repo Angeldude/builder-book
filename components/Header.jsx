@@ -5,8 +5,7 @@ import Grid from '@mui/material/Grid';
 
 import { styleToolbar } from './SharedStyles';
 
-const Header = () => {
-  return (
+const Header = () => (
     <div>
       <Toolbar style={styleToolbar}>
         <Grid container direction="row" justifyContent="space-around" align="center">
@@ -18,7 +17,5 @@ const Header = () => {
         </Grid>
       </Toolbar>
     </div>
-  );
-};
-
+  )
 export default Header;

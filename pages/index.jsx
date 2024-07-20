@@ -1,8 +1,19 @@
+import PropTypes from 'prop-types'
+
 import Head from 'next/head'
-import Button from '@mui/material/Button'
 
+const propTypes = {
+  user: PropTypes.shape({
+    displayName: PropTypes.string,
+    email: PropTypes.string.isRequired,
+  }),
+};
 
-const Index = () => (
+const defaultProps = {
+  user: null,
+};
+
+const Index = ({ user }) => (
   <div style={{ padding: '10px 45px' }}>
     <Head>
       <title>Index page</title>
@@ -12,8 +23,16 @@ const Index = () => (
     <p>
       <a href="https://angeldude.github.io">Go here for my blog</a>
     </p>
-    <Button variant='contained'>MUI Shit</Button>
+    <p>
+      Email:&nbsp;
+      { user.email }
+    </p>
   </div>
 )
+
+Index.getInitialProps = async (ctx) => ({ user: JSON.parse(ctx.query.user) });
+
+Index.propTypes = propTypes;
+Index.defaultProps = defaultProps;
 
 export default Index;

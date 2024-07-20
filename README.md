@@ -9,3 +9,5 @@ Material UI integration
 server side rendering.
 
 Not bad, the book is a big rough at times with little to no explanation of what we're doing but I managed.
+
+to run locally, install dependencies using `yarn install` and then `yarn dev`

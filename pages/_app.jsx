@@ -16,7 +16,7 @@ const propTypes = {
 class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props
-
+    
     return (
       <CacheProvider value={createCache({ key: 'css' })}>
         <ThemeProvider theme={theme}>
