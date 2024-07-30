@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 
 const propTypes = {
-  user: PropTypes.shape({
+    user: PropTypes.shape({
     displayName: PropTypes.string,
     email: PropTypes.string.isRequired,
   }),
@@ -25,7 +25,7 @@ const Index = ({ user }) => (
     </p>
     <p>
       Email:&nbsp;
-      { user.email }
+      {user.email}
     </p>
   </div>
 )
