@@ -39,11 +39,10 @@ app.prepare().then(() => {
     server.use(session(sessionOptions));
 
     server.get('/', async (req, res) => {
-        req.session.foo = 'bar';
+        const user = JSON.stringify(await User.findOne({ slug: 'team-builder-book' }));        
+        req.user = user;
 
-        const user = JSON.stringify(await User.findOne({ slug: 'team-builder-book' }).lean());
-
-        app.render(req, res, '/', { user });
+        app.render(req, res, '/');
     });
 
     server.get('*', (req, res) => handle(req, res));

@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import React from 'react';
+import Head from 'next/head';
 
-import Head from 'next/head'
+import withAuth from '../lib/withAuth';
 
 const propTypes = {
     user: PropTypes.shape({
@@ -13,26 +15,24 @@ const defaultProps = {
   user: null,
 };
 
-const Index = ({ user }) => (
-  <div style={{ padding: '10px 45px' }}>
-    <Head>
-      <title>Index page</title>
-      <meta name="description" content="This is the description of the Index page" />
-    </Head>
-    <p>All this work for some black text on white background.</p>
-    <p>
-      <a href="https://angeldude.github.io">Go here for my blog</a>
-    </p>
-    <p>
-      Email:&nbsp;
-      {user.email}
-    </p>
-  </div>
-)
-
-Index.getInitialProps = async (ctx) => ({ user: JSON.parse(ctx.query.user) });
+// eslint-disable-next-line react/prefer-stateless-function
+class Index extends React.Component {
+  render() {
+    const { user } = this.props;
+    return (
+      <div style={{ padding: '10px 45px' }}>
+        <Head>
+          <title>Settings</title>
+          <meta name="description" content="List of purchased books." />
+        </Head>
+        <p>List of purchased books</p>
+        <p>Email: {user.email}</p>
+      </div>
+    );
+  }
+}
 
 Index.propTypes = propTypes;
 Index.defaultProps = defaultProps;
 
-export default Index;
+export default withAuth(Index);
